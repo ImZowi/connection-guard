@@ -37,7 +37,7 @@
   * Country code (e.g. `US`, `CA`, ...)
   * City name (e.g. `Berlin`, `London`, ...)
   * ISP provider (e.g. `AT&T`, `Telekom`, ...)
-
+* **WebHook Support for Discord** - Send messages to discord channels when a geo-blocked or vpn user tries to connect!
 ## How To Use
 
 ### Installation
