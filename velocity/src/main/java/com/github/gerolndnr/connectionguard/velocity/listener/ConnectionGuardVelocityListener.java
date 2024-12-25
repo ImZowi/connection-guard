@@ -112,15 +112,6 @@ public class ConnectionGuardVelocityListener {
                 }
 
                 if (isGeoFlagged) {
-                    Component kickMessage = LegacyComponentSerializer.legacyAmpersand().deserialize(
-                            ConnectionGuardVelocityPlugin.getInstance().getCgVelocityConfig().getLanguageConfig().getString("messages.geo-block")
-                                    .replaceAll("%IP%", geoResult.getIpAddress())
-                                    .replaceAll("%COUNTRY%", geoResult.getCountryName())
-                                    .replaceAll("%CITY%", geoResult.getCityName())
-                                    .replaceAll("%ISP%", geoResult.getIspName())
-                                    .replaceAll("%NAME%", loginEvent.getPlayer().getUsername())
-                    );
-
                     // Check if staff should be notified
                     if (ConnectionGuardVelocityPlugin.getInstance().getCgVelocityConfig().getConfig().getBoolean("behavior.geo.notify-staff")) {
                         Component notifyMessage = LegacyComponentSerializer.legacySection().deserialize(
@@ -159,6 +150,15 @@ public class ConnectionGuardVelocityListener {
 
                     // Check if player should be kicked
                     if (ConnectionGuardVelocityPlugin.getInstance().getCgVelocityConfig().getConfig().getBoolean("behavior.geo.kick-player")) {
+                        Component kickMessage = LegacyComponentSerializer.legacyAmpersand().deserialize(
+                                ConnectionGuardVelocityPlugin.getInstance().getCgVelocityConfig().getLanguageConfig().getString("messages.geo-block")
+                                        .replaceAll("%IP%", geoResult.getIpAddress())
+                                        .replaceAll("%COUNTRY%", geoResult.getCountryName())
+                                        .replaceAll("%CITY%", geoResult.getCityName())
+                                        .replaceAll("%ISP%", geoResult.getIspName())
+                                        .replaceAll("%NAME%", loginEvent.getPlayer().getUsername())
+                        );
+
                         loginEvent.setResult(ResultedEvent.ComponentResult.denied(kickMessage));
                         return;
                     }
