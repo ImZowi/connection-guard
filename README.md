@@ -44,7 +44,7 @@
 
 To use Connection Guard, you need a **Spigot server** (or Paper, Pufferfish, Purpur, ...) running on `1.8.X` and `1.21.X` or an up-to-date version of **BungeeCord** (or Waterfall) or **Velocity**.
 
-1. Build the project (`./gradlew clean shadowJar`) or [download it](https://github.com/gerolndnr/connection-guard/releases) from the release section.
+1. Build the project (`./gradlew clean shadowJar`) download it from the [release section](https://github.com/gerolndnr/connection-guard/releases).
 2. Place the downloaded `.jar` file into the plugins folder of your Spigot, BungeeCord or Velocity server.
 3. Start or restart your server.
 4. Optional: Configure Connection Guard configuration in its directory (`config.yml` and `translation/en.yml`)
@@ -74,6 +74,8 @@ This software uses the following open source packages:
 - Readme is taken from [here](https://github.com/amitmerchant1990/electron-markdownify)
 
 ## Related
+
+[Connection Guard Spigot Page](https://www.spigotmc.org/resources/connection-guard-vpn-and-geo-blocking-spigot-bungeecord-velocity.121509/) - Official Resource Page
 
 [LNDNR's Anti-VPN & Geo-Blocking](https://www.spigotmc.org/resources/lndnrs-anti-vpn-geo-blocking-1-16-5-1-21-x-bedrock-support.116744/) - Predecessor of Connection Guard
 
