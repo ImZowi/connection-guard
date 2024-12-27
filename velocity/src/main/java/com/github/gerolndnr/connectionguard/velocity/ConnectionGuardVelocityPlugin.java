@@ -30,7 +30,7 @@ import java.util.Set;
 @Plugin(
         id="connection-guard",
         name="Connection Guard",
-        version="0.4.0",
+        version="0.4.1",
         url="https://github.com/gerolndnr/connection-guard",
         authors = {"gerolndnr"}
 )
