@@ -32,7 +32,16 @@ public class ConnectionGuardVelocityListener {
         ) {
             vpnResultFuture = CompletableFuture.completedFuture(new VpnResult(ipAddress, false));
         } else {
-            vpnResultFuture = ConnectionGuard.getVpnResult(ipAddress);
+            // Check if 'use-permission-exemption' is activated.
+            if (ConnectionGuardVelocityPlugin.getInstance().getCgVelocityConfig().getConfig().getBoolean("behavior.vpn.use-permission-exemption")) {
+                if (loginEvent.getPlayer().hasPermission("connectionguard.exemption.vpn")) {
+                    vpnResultFuture = CompletableFuture.completedFuture(new VpnResult(ipAddress, false));
+                } else {
+                    vpnResultFuture = ConnectionGuard.getVpnResult(ipAddress);
+                }
+            } else {
+                vpnResultFuture = ConnectionGuard.getVpnResult(ipAddress);
+            }
         }
 
         if (
@@ -42,7 +51,16 @@ public class ConnectionGuardVelocityListener {
         ) {
             geoResultOptionalFuture = CompletableFuture.completedFuture(Optional.empty());
         } else {
-            geoResultOptionalFuture = ConnectionGuard.getGeoResult(ipAddress);
+            // Check if 'use-permission-exemption' is activated.
+            if (ConnectionGuardVelocityPlugin.getInstance().getCgVelocityConfig().getConfig().getBoolean("behavior.geo.use-permission-exemption")) {
+                if (loginEvent.getPlayer().hasPermission("connectionguard.exemption.geo")) {
+                    geoResultOptionalFuture = CompletableFuture.completedFuture(Optional.empty());
+                } else {
+                    geoResultOptionalFuture = ConnectionGuard.getGeoResult(ipAddress);
+                }
+            } else {
+                geoResultOptionalFuture = ConnectionGuard.getGeoResult(ipAddress);
+            }
         }
 
         return EventTask.async(() -> {
