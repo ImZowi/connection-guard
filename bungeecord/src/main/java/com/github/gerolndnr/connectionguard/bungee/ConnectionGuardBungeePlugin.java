@@ -9,6 +9,7 @@ import com.github.gerolndnr.connectionguard.core.cache.NoCacheProvider;
 import com.github.gerolndnr.connectionguard.core.cache.RedisCacheProvider;
 import com.github.gerolndnr.connectionguard.core.cache.SQLiteCacheProvider;
 import com.github.gerolndnr.connectionguard.core.geo.IpApiGeoProvider;
+import com.github.gerolndnr.connectionguard.core.geo.ProxyCheckGeoProvider;
 import com.github.gerolndnr.connectionguard.core.vpn.*;
 import com.github.gerolndnr.connectionguard.core.vpn.custom.CustomVpnProvider;
 import net.md_5.bungee.api.plugin.Plugin;
@@ -189,6 +190,9 @@ public class ConnectionGuardBungeePlugin extends Plugin {
         switch (getConfig().getString("provider.geo.service").toLowerCase()) {
             case "ip-api":
                 ConnectionGuard.setGeoProvider(new IpApiGeoProvider());
+                break;
+            case "proxycheck":
+                ConnectionGuard.setGeoProvider(new ProxyCheckGeoProvider(getConfig().getString("provider.vpn.proxycheck.api-key")));
                 break;
             default:
                 getLogger().info("The specified geo provider is invalid. Please use IP-API.");
