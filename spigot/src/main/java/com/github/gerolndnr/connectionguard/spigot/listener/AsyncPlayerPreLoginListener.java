@@ -69,23 +69,32 @@ public class AsyncPlayerPreLoginListener implements Listener {
         if (vpnResult.isVpn() && !hasVpnExemptionPermission) {
             // Check if staff should be notified
             if (ConnectionGuardSpigotPlugin.getInstance().getConfig().getBoolean("behavior.vpn.notify-staff")) {
+                ConnectionGuard.getLogger().info("staff should be notified");
                 String notifyMessage = ChatColor.translateAlternateColorCodes(
                         '&',
                         ConnectionGuardSpigotPlugin.getInstance().getLanguageConfig().getString("messages.vpn-notify")
                                 .replaceAll("%IP%", vpnResult.getIpAddress())
                                 .replaceAll("%NAME%", preLoginEvent.getName())
                 );
-                Bukkit.broadcast(notifyMessage, "connectionguard.notify.vpn");
+                int amountRecipients = ConnectionGuardSpigotPlugin.getInstance().getServer().broadcast(notifyMessage, "connectionguard.notify.vpn");
+                ConnectionGuard.getLogger().info("amount recipients: " + amountRecipients);
+            } else {
+                ConnectionGuard.getLogger().info("staff should not be notified");
             }
 
             // Check if command should be executed on flag
             if (ConnectionGuardSpigotPlugin.getInstance().getConfig().getBoolean("behavior.vpn.execute-command.enabled")) {
-                Bukkit.dispatchCommand(
-                        Bukkit.getConsoleSender(),
-                        ConnectionGuardSpigotPlugin.getInstance().getConfig().getString("behavior.vpn.execute-command.command")
-                                .replaceAll("%NAME%", preLoginEvent.getName())
-                                .replaceAll("%IP%", ipAddress)
-                );
+                Bukkit.getScheduler().runTask(ConnectionGuardSpigotPlugin.getInstance(), new Runnable() {
+                    @Override
+                    public void run() {
+                        Bukkit.dispatchCommand(
+                                Bukkit.getConsoleSender(),
+                                ConnectionGuardSpigotPlugin.getInstance().getConfig().getString("behavior.vpn.execute-command.command")
+                                        .replaceAll("%NAME%", preLoginEvent.getName())
+                                        .replaceAll("%IP%", ipAddress)
+                        );
+                    }
+                });
             }
 
             // Check if WebHook should be executed
