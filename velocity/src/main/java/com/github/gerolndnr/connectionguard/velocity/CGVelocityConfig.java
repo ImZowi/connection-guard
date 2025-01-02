@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class CGVelocityConfig {
     private File configFile;
@@ -28,7 +29,7 @@ public class CGVelocityConfig {
         configFile = new File(dataDirectory.toFile(), "config.yml");
         if (!configFile.exists()) {
             try {
-                InputStream in = getClass().getClassLoader().getResourceAsStream("config.yml");
+                InputStream in = ConnectionGuardVelocityPlugin.class.getResourceAsStream("config.yml");
                 Files.copy(in, configFile.toPath());
             } catch (IOException e) {
                 ConnectionGuardVelocityPlugin.getInstance().getLogger().error("Connection Guard | " + e.getMessage());
@@ -45,7 +46,8 @@ public class CGVelocityConfig {
         languageFile = new File(dataDirectory.resolve("translation").toFile(), selectedLanguageFileName);
         if (!languageFile.exists()) {
             try {
-                InputStream in = getClass().getClassLoader().getResourceAsStream("translation" + File.separator + "en.yml");
+                InputStream in = ConnectionGuardVelocityPlugin.class.getResourceAsStream("/translation/en.yml");
+
                 Files.copy(in, languageFile.toPath());
             } catch (IOException e) {
                 ConnectionGuardVelocityPlugin.getInstance().getLogger().error("Connection Guard | " + e.getMessage());

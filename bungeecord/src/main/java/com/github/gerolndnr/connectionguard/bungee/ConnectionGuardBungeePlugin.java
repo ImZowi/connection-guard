@@ -50,7 +50,7 @@ public class ConnectionGuardBungeePlugin extends Plugin {
         configFile = new File(getDataFolder(), "config.yml");
         if (!configFile.exists()) {
             try {
-                InputStream in = getResourceAsStream("config.yml");
+                InputStream in = ConnectionGuardBungeePlugin.class.getResourceAsStream("/config.yml");
                 Files.copy(in, configFile.toPath());
             } catch (IOException e) {
                 getLogger().info("Connection Guard | " + e.getMessage());
@@ -67,7 +67,7 @@ public class ConnectionGuardBungeePlugin extends Plugin {
         languageFile = new File(getDataFolder().toPath().resolve("translation").toFile(), selectedLanguageFileName);
         if (!languageFile.exists()) {
             try {
-                InputStream in = getResourceAsStream("translation" + File.separator + "en.yml");
+                InputStream in = ConnectionGuardBungeePlugin.class.getResourceAsStream("/translation/en.yml");
                 Files.copy(in, languageFile.toPath());
             } catch (IOException e) {
                 getLogger().info("Connection Guard | " + e.getMessage());
