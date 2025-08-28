@@ -2,6 +2,7 @@ package com.github.gerolndnr.connectionguard.velocity.listener;
 
 import com.github.gerolndnr.connectionguard.core.ConnectionGuard;
 import com.github.gerolndnr.connectionguard.core.geo.GeoResult;
+import com.github.gerolndnr.connectionguard.core.luckperms.CGLuckPermsHelper;
 import com.github.gerolndnr.connectionguard.core.vpn.VpnResult;
 import com.github.gerolndnr.connectionguard.core.webhook.CGWebHookHelper;
 import com.github.gerolndnr.connectionguard.velocity.ConnectionGuardVelocityPlugin;
@@ -50,6 +51,22 @@ public class ConnectionGuardVelocityListener {
 
         return EventTask.async(() -> {
             VpnResult vpnResult = vpnResultFuture.join();
+            Optional<GeoResult> geoResultOptional = geoResultOptionalFuture.join();
+
+            // Check if player has a permission exemption
+            if (ConnectionGuardVelocityPlugin.getInstance().getCgVelocityConfig().getConfig().getBoolean("behavior.vpn.use-permission-exemption")) {
+                if (CGLuckPermsHelper.hasPermission(loginEvent.getUniqueId(), "connectionguard.exemption.vpn").join()) {
+                    vpnResult = new VpnResult(ipAddress, false);
+                }
+            }
+
+            if (ConnectionGuardVelocityPlugin.getInstance().getCgVelocityConfig().getConfig().getBoolean("behavior.geo.use-permission-exemption")) {
+                if (CGLuckPermsHelper.hasPermission(loginEvent.getUniqueId(), "connectionguard.exemption.geo").join()) {
+                    geoResultOptional = Optional.empty();
+                }
+            }
+
+
 
             if (vpnResult.isVpn()) {
                 // Check if staff should be notified
@@ -96,7 +113,6 @@ public class ConnectionGuardVelocityListener {
                 }
             }
 
-            Optional<GeoResult> geoResultOptional = geoResultOptionalFuture.join();
             if (geoResultOptional.isPresent()) {
                 GeoResult geoResult = geoResultOptional.get();
                 boolean isGeoFlagged = false;
